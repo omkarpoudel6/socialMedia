@@ -36,6 +36,7 @@ class UserRegisterForm(forms.ModelForm):
         email=self.cleaned_data.get('email')
         email_qs=User.objects.filter(email=email)
         if email_qs.exists():
+            print("Email is already being used")
             raise forms.ValidationError("This email is already being used")
         return email
 
@@ -44,6 +45,14 @@ class UserRegisterForm(forms.ModelForm):
         password2=self.cleaned_data.get('password2')
 
         if password1 != password2:
-            raise forms.ValidationError("Password donot match")
+            print("Password don't match")
+            raise forms.ValidationError("Password don't match")
         return password2
+
+    def clean_username(self):
+        username=self.cleaned_data.get('username')
+        username_qs=User.objects.filter(username=username)
+        if username_qs.exists():
+            raise forms.ValidationError("Username is already Taken")
+        return username
 

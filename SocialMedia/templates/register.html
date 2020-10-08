@@ -14,11 +14,24 @@
       <div class="form-group">
         <label for="exampleInputEmail1">Email address</label>
         <input type="email" class="form-control" name="email" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+        {% if form.email.errors %}
+            {% for error in form.email.errors %}
+                <div class="alert alert-danger" role="alert">
+                  {{error}}
+                </div>
+            {% endfor %}
+        {% endif %}
       </div>
         <div class="form-group">
         <label for="exampleInputusername">Username</label>
         <input type="text" class="form-control" name="username" id="exampleInputusername" placeholder="Enter username">
+            {% if form.username.errors %}
+            {% for error in form.username.errors %}
+                <div class="alert alert-danger" role="alert">
+                  {{error}}
+                </div>
+            {% endfor %}
+        {% endif %}
       </div>
       <div class="form-group">
         <label for="exampleInputPassword1">Password</label>
@@ -27,7 +40,15 @@
       <div class="form-group">
         <label for="exampleInputPassword2">Confirm Password</label>
         <input type="password" class="form-control" name="password2"id="exampleInputPassword2" placeholder="Confirm Password">
+          {% if form.password2.errors %}
+            {% for error in form.password2.errors %}
+                <div class="alert alert-danger" role="alert">
+                  {{error}}
+                </div>
+            {% endfor %}
+        {% endif %}
       </div>
+        <p>Already a user <a href="/login">Signin</a></p>
       <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 </div>

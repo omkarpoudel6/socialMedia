@@ -10,10 +10,12 @@
 
 <div class="container" style="width:30%;margin-top:100px;">
     <h4 style="text-align: center; color:#7d607a;">Login to your account</h4>
-    {% for error in field.errors %}
-        {{error}}
+    {% if form.errors %}
+        {% for error in form.errors %}
+            {{error}}
+        {% endfor %}
     {% endif %}
-    <form method="post">
+    <form method="post" action="/login/">
         {% csrf_token %}
       <div class="form-group">
         <label for="exampleInputEmail1">Username</label>
@@ -23,6 +25,7 @@
         <label for="exampleInputPassword1">Password</label>
         <input type="password" class="form-control" name="password" id="exampleInputPassword1">
       </div>
+        <p>Create your free account <a href="/register">here..</a></p>
       <button type="submit" class="btn btn-primary">Submit</button>
     </form>
     </div>
