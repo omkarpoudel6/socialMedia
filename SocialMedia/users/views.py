@@ -4,14 +4,13 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate,get_user_model,login,logout
 from django.contrib.auth.models import User
+from .models import Profile
 
 from .forms import UserLoginForm,UserRegisterForm
 
 # Create your views here.
 
 def login_view(request):
-    next=request.GET.get('next')
-    # form=UserLoginForm(request.POST or None)
     if request.method=="POST":
         form=UserLoginForm(request.POST)
         if form.is_valid():
@@ -19,27 +18,23 @@ def login_view(request):
             password=form.cleaned_data.get('password')
             user=authenticate(username=username,password=password)
             login(request,user)
-            if next:
-                return redirect(next)
-            else:
-                return redirect('/')
+
+            return redirect("/")
     else:
         return redirect("/")
-    # context={
-    #     'form':form
-    # }
-    # return render(request,'login.html',context)
+
 
 def register_view(request):
     next=request.GET.get('next')
     form=UserRegisterForm(request.POST or None)
     if form.is_valid():
         user=form.save(commit=False)
-        # username=form.cleaned_data.get('username')
+        username=form.cleaned_data.get('username')
         password=form.cleaned_data.get('password')
-        # user=authenticate(username=username,password=password)
         user.set_password(password)
         user.save()
+        profile=Profile.objects.create(username=user)
+        profile.save()
         new_user=authenticate(username=user.username,password=password)
         login(request, new_user)
         if next:
@@ -54,12 +49,6 @@ def register_view(request):
 
 
 def Home(request):
-    # user=request.user
-    # print(user)
-    # if user.is_authenticated():
-    #     return render(request,'home.html')
-    # else:
-    #     return render(request,'login.html')
     user=request.user
     user_obj=User.objects.filter(username=user)
     if user_obj:
@@ -76,6 +65,12 @@ def Logout(request):
     logout(request)
     return redirect('/login')
 
-def Profile(request):
-    return render(request,'profile/userprofile.html')
+def User_profile(request):
+    user_name=request.user
+    obj=Profile.objects.get(username=user_name)
+    context={
+        'obj':obj
+    }
+    return render(request,'profile/userprofile.html',context)
+
 

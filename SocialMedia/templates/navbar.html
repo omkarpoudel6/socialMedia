@@ -19,12 +19,9 @@
           Settings
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          {% if user.is_authenticated %}
+          <a class="dropdown-item" href="/profile">Profile</a>
           <a class="dropdown-item" href="/logout">logout</a>
-          {% else %}
-          <a class="dropdown-item" href="#">Login</a>
-          <a class="dropdown-item" href="#">Signup</a>
-          {% endif %}
+
         </div>
       </li>
       <li class="nav-item">

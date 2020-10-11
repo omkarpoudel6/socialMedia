@@ -21,6 +21,7 @@ class UserLoginForm(forms.Form):
                 raise forms.ValidationError('This user is not active')
         return super(UserLoginForm,self).clean(*args, **kwargs)
 
+
 class UserRegisterForm(forms.ModelForm):
     password2=forms.CharField(widget=forms.PasswordInput,label='Confirm Password')
 
