@@ -3,35 +3,35 @@
 <div class="container" style="margin-top:10px;">
     <div class="row">
         <div class="col-md-5">
-            <img src="{{obj.avatar.url}}">
+            <img src="{{profile.avatar.url}}" style="border-radius:50px;">
         </div>
         <div class="col-md-7">
             <table class="table">
                 <tr>
                   <td><strong>Firstname</strong></td>
-                  <td>{{obj.first_name}}</td>
+                  <td>{{profile.first_name}}</td>
                 </tr>
                 <tr>
                   <td><strong>Middlename</strong></td>
-                  <td>{{obj.middle_name}}</td>
+                  <td>{{profile.middle_name}}</td>
                 </tr>
                 <tr>
                   <td><strong>Lastname</strong></td>
-                  <td>{{obj.last_name}}</td>
+                  <td>{{profile.last_name}}</td>
                 </tr>
                 <tr>
                   <td><strong>Country</strong></td>
-                  <td>{{obj.country}}</td>
+                  <td>{{profile.country}}</td>
                 </tr>
                 <tr>
                   <td><strong>Phone</strong></td>
-                  <td>{{obj.phone}}</td>
+                  <td>{{profile.phone}}</td>
                 </tr>
               </tbody>
             </table>
             <!-- Button trigger modal -->
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-              Update Your Profile
+              Update
             </button>
 
             <!-- Modal -->
@@ -39,18 +39,20 @@
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Update Your Profile</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
-                  <div class="modal-body">
-                    ...
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                  </div>
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                      <div class="modal-body">
+                        {{form}}
+                      </div>
+                      <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Update</button>
+                      </div>
+                    </form>
                 </div>
               </div>
             </div>

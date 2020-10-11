@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth import authenticate,get_user_model
+from .models import Profile
 
 User=get_user_model()
 
@@ -56,4 +57,32 @@ class UserRegisterForm(forms.ModelForm):
         if username_qs.exists():
             raise forms.ValidationError("Username is already Taken")
         return username
+
+class ProfileUpdateForm(forms.ModelForm):
+    # COUNTRY = (
+    #     ('NEPAL', 'NEPAL'),
+    #     ('AMERICA', 'AMERICA'),
+    #     ('SPAIN', 'SPAIN'),
+    #     ('ENGLAND', 'ENGLAND'),
+    #     ('JAPAN', 'JAPAN'),
+    # )
+    #
+    # first_name=forms.CharField(max_length=30)
+    # middle_name=forms.CharField(max_length=30)
+    # last_name=forms.CharField(max_length=30)
+    # avatar=forms.ImageField()
+    # country=forms.ChoiceField(choices=COUNTRY)
+    # phone=forms.CharField(max_length=13)
+    class Meta:
+        model=Profile
+        fields=['first_name','middle_name','last_name','avatar','country','phone']
+
+        widgets={
+            'first_name':forms.TextInput(attrs={'class':'form-control'}),
+            'middle_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'avatar': forms.FileInput(attrs={'class': 'form-control'}),
+            'country': forms.Select(attrs={'class': 'form-control'}),
+            'phone': forms.TextInput(attrs={'class': 'form-control'})
+        }
 

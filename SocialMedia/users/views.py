@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate,get_user_model,login,logout
 from django.contrib.auth.models import User
 from .models import Profile
 
-from .forms import UserLoginForm,UserRegisterForm
+from .forms import UserLoginForm,UserRegisterForm,ProfileUpdateForm
 
 # Create your views here.
 
@@ -67,10 +67,18 @@ def Logout(request):
 
 def User_profile(request):
     user_name=request.user
-    obj=Profile.objects.get(username=user_name)
+    profile=Profile.objects.get(username=user_name)
+    form = ProfileUpdateForm(request.POST or None, request.FILES or None, instance=profile)
+    if request.method=="POST":
+        if form.is_valid():
+            form.save()
+            return redirect("/profile")
     context={
-        'obj':obj
+        'form':form,
+        'profile':profile
     }
-    return render(request,'profile/userprofile.html',context)
+    return render(request, 'profile/userprofile.html', context)
+
+
 
 
