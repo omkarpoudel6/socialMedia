@@ -1,4 +1,15 @@
 {% extends 'base.html' %}
 {% block content %}
-<h2>This is homepage</h2>
+<h2>All Posts</h2>
+{% for post in posts %}
+    {{post.author}}<br>
+    {{post.title}}<br>
+    {{post.created_at|timesince}} ago<br>
+    {% if post.image %}
+        <img src="{{post.image.url}}"><br>
+    {% endif %}
+    {{post.content}}<br>
+    <hr>
+    <br>
+{% endfor %}
 {% endblock %}

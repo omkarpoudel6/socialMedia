@@ -48,19 +48,6 @@ def register_view(request):
     return render(request,'register.html',context)
 
 
-def Home(request):
-    user=request.user
-    user_obj=User.objects.filter(username=user)
-    if user_obj:
-        return render(request, 'home.html')
-    else:
-        form=UserLoginForm
-        context={
-            'form':form
-        }
-        return render(request, 'login.html',context)
-
-
 def Logout(request):
     logout(request)
     return redirect('/login')
