@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth import authenticate,get_user_model
+from .models import Post
 
 
 class UserLoginForm(forms.Form):
@@ -19,3 +20,14 @@ class UserLoginForm(forms.Form):
             if not user.is_active:
                 raise forms.ValidationError('This user is not active')
         return super(UserLoginForm,self).clean(*args, **kwargs)
+
+class CreatePostForm(forms.ModelForm):
+    class Meta:
+        model=Post
+        fields=['title','image','content']
+
+        widgets={
+            'title':forms.TextInput(attrs={'class':'form-control'}),
+            'image':forms.FileInput(attrs={'class':'form-control'}),
+            'content':forms.Textarea(attrs={'class':'form-control'})
+        }
