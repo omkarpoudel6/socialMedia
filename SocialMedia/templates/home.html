@@ -37,21 +37,36 @@
               </form>
           </div>
         </div>
-        <div class="post">
+        <div class="post bg-light">
             {% for post in posts %}
-                {{post.author}}<br>
-                {{post.title}}<br>
-                {{post.created_at|timesince}} ago<br>
-
-                {% if post.image %}
-                    <div class="imagepart justify-content-center">
-                        <img src="{{post.image.url}}" class="img-fluid" alt="Image loading Failed"><br>
+            <div class="post-complete my-2" style="border-radius:10px;">
+                <div class="author-info" style="display:flex;">
+                    <div class="author-image">
+                        <img src="{{post.author.profile.avatar.url}}" style="height:50px;width:50px;border-radius:30px;" class="img-fluid">
                     </div>
-                {% endif %}
-                {{post.content}}<br>
-                <hr>
-                <br>`
+                    <div class="post-detail mx-2">
+                        <strong>{{post.author}}</strong><br>
+                        <small>{{post.created_at|timesince}} ago</small>
+                    </div>
+                </div>
+                <div class="complete-post my-2">
+                    {{post.title}}<br>
+
+                    {% if post.image %}
+                        <div class="imagepart justify-content-center">
+                            <img src="{{post.image.url}}" style="width:100%;" class="img-fluid" alt="Image loading Failed"><br>
+                        </div>
+                    {% endif %}
+                    {{post.content}}<br>
+                    <br>
+                     <small class="font-italic">100</small><br>
+                    <button type="button" class="btn btn-outline-info">Like</button>
+                    <hr>
+                    <hr>`
+                </div>
             {% endfor %}
+            </div>
+
         </div>
     </div>
     <div class="col-md-3">

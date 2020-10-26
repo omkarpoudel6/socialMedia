@@ -33,8 +33,8 @@ def register_view(request):
         password=form.cleaned_data.get('password')
         user.set_password(password)
         user.save()
-        profile=Profile.objects.create(username=user)
-        profile.save()
+        # profile=Profile.objects.create(username=user)
+        # profile.save()
         new_user=authenticate(username=user.username,password=password)
         login(request, new_user)
         if next:
