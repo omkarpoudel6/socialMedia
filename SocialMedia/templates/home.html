@@ -2,12 +2,12 @@
 {% block content %}
 <div class="row">
     <div class="col-md-3">
-        <nav class="nav flex-column">
-          <a class="nav-link disabled">{{user.username}}</a>
-          <a class="nav-link active" href="#">Active</a>
-          <a class="nav-link" href="#">Link</a>
-          <a class="nav-link" href="#">Link</a>
-        </nav>
+<!--        <nav class="nav flex-column">-->
+<!--          <a class="nav-link disabled">{{user.username}}</a>-->
+<!--          <a class="nav-link active" href="#">Active</a>-->
+<!--          <a class="nav-link" href="#">Link</a>-->
+<!--          <a class="nav-link" href="#">Link</a>-->
+<!--        </nav>-->
     </div>
     <div class="col-md-6 my-4">
                     <!-- Button trigger modal -->
@@ -54,7 +54,7 @@
 
                     {% if post.image %}
                         <div class="imagepart justify-content-center">
-                            <img src="{{post.image.url}}" style="width:100%;" class="img-fluid" alt="Image loading Failed"><br>
+                            <img src="{{post.image.url}}" style="width:100%;height:500px;" class="img-fluid" alt="Image loading Failed"><br>
                         </div>
                     {% endif %}
                     {{post.content}}<br>
@@ -70,7 +70,7 @@
         </div>
     </div>
     <div class="col-md-3">
-        <h2>This is right sidebar</h2>
+<!--        <h2>This is right sidebar</h2>-->
     </div>
 </div>
 
