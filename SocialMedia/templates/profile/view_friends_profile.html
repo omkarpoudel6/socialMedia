@@ -1,4 +1,45 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<div class="container my-4">
+    <div class="row">
+        <div class="col-md-5">
+            <img src="{{profile.avatar.url}}" class="rounded mx-auto d-block" style="border-radius:50px;height:200px;" alt="Image Here"><br>
+<!--            <img src="{{profile.avatar.url}}" style="border-radius:50px;height:200px;"><br>-->
+            <strong><p class="text-center">{{profile.username}}</p></strong>
+
+        </div>
+        <div class="col-md-7">
+            <table class="table">
+                <tr>
+                  <td><strong>Firstname</strong></td>
+                  <td>{{profile.first_name}}</td>
+                </tr>
+                <tr>
+                  <td><strong>Middlename</strong></td>
+                  <td>{{profile.middle_name}}</td>
+                </tr>
+                <tr>
+                  <td><strong>Lastname</strong></td>
+                  <td>{{profile.last_name}}</td>
+                </tr>
+                <tr>
+                  <td><strong>Country</strong></td>
+                  <td>{{profile.country}}</td>
+                </tr>
+                <tr>
+                  <td><strong>Phone</strong></td>
+                  <td>{{profile.phone}}</td>
+                </tr>
+              </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="post bg-light">
+        {% for post in posts %}
+            {{post}}
+        {% endfor %}
+    </div>
+</div>
+
 {% endblock %}

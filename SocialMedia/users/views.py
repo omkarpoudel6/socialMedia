@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate,get_user_model,login,logout
 from django.contrib.auth.models import User
 from .models import Profile
+from posts.models import Post
 
 from .forms import UserLoginForm,UserRegisterForm,ProfileUpdateForm
 
@@ -66,9 +67,15 @@ def User_profile(request):
     }
     return render(request, 'profile/userprofile.html', context)
 
-def view_friends_profile(request,username):
-    print(username)
-    return render(request,'profile/view_friends_profile.html')
+def view_friends_profile(request,id):
+    profile=Profile.objects.get(id=id)
+    posts=Post.objects.filter(author=id)
+    print(posts)
+    context={
+        'profile':profile,
+        'posts':posts
+    }
+    return render(request,'profile/view_friends_profile.html',context)
 
 
 

@@ -6,5 +6,5 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     # path('/myposts', userPost,name='userpost'),
-    path('view_friends_profile/<str:username>/',view_friends_profile,name='view_friends_profile')
+    path('view_friends_profile/<int:id>/',view_friends_profile,name='view_friends_profile')
 ]+ static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
