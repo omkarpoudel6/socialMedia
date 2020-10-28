@@ -28,5 +28,6 @@ urlpatterns = [
     path('profile/',User_profile,name='profile'),
     path('logout/',Logout,name='logout'),
 
-    path('mypost/',include("posts.urls"))
+    path('posts/',include("posts.urls")),
+    path('friends/',include("users.urls"))
 ]+ static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

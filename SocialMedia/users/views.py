@@ -66,6 +66,10 @@ def User_profile(request):
     }
     return render(request, 'profile/userprofile.html', context)
 
+def view_friends_profile(request,username):
+    print(username)
+    return render(request,'profile/view_friends_profile.html')
+
 
 
 
