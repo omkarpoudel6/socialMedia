@@ -69,7 +69,7 @@ def User_profile(request):
 
 def view_friends_profile(request,id):
     profile=Profile.objects.get(id=id)
-    posts=Post.objects.filter(author=id)
+    posts=Post.objects.filter(author=profile.username)
     print(posts)
     context={
         'profile':profile,
