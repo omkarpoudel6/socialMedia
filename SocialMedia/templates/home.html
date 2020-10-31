@@ -59,8 +59,16 @@
                     {% endif %}
                     {{post.content}}<br>
                     <br>
-                     <small class="font-italic">100</small><br>
-                    <button type="button" class="btn btn-outline-info">Like</button>
+                     <strong>{{post.liked.all.count}} likes</strong>
+                    <form action="{% url 'posts:like-post' %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="post_id" value="{{post.id}}">
+                        {% if user not in post.liked.all %}
+                            <button type="submit" class="btn btn-outline-success">Like</button>
+                        {% else %}
+                            <button type="submit" class="btn btn-outline-danger">Unlike</button>
+                        {% endif %}
+                    </form>
                     <hr>
                     <hr>`
                 </div>

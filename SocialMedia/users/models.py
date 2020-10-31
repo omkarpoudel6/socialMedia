@@ -28,8 +28,16 @@ class Profile(models.Model):
     def __str__(self):
         return str(self.username)
 
+class FriendRequests(models.Model):
+
+    username=models.OneToOneField(User,on_delete=models.CASCADE,related_name='sender')
+    sender=models.ForeignKey(User,on_delete=models.CASCADE,related_name='receiver')
+    status=models.CharField(max_length=8,default='received')
+
+    def __str__(self):
+        return self.sender
+
 @receiver(post_save,sender=User)
 def post_save_create_user_profile(sender,created,instance,**kwargs):
     if created:
-        print(instance)
         Profile.objects.create(username=instance)
