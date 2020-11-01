@@ -15,7 +15,7 @@ class Profile(models.Model):
         ('JAPAN','JAPAN'),
     )
 
-    username=models.OneToOneField(User,on_delete=models.CASCADE)
+    username=models.OneToOneField(User,on_delete=models.CASCADE,related_name='user')
     first_name=models.CharField(max_length=30, blank=True)
     middle_name=models.CharField(max_length=30, blank=True)
     last_name=models.CharField(max_length=30, blank=True)
@@ -41,9 +41,19 @@ class RelationShip(models.Model):
     status=models.CharField(choices=CHOICES,max_length=8)
 
     def __str__(self):
-        return self.sender
+        return f"{self.sender}-{self.receiver}-{self.status}"
 
 @receiver(post_save,sender=User)
 def post_save_create_user_profile(sender,created,instance,**kwargs):
     if created:
         Profile.objects.create(username=instance)
+
+@receiver(post_save,sender=RelationShip)
+def post_save_add_to_friends(sender,instance,created,**kwargs):
+    sender_=instance.sender
+    receiver_=instance.receiver
+    if instance.status=='accepted':
+        sender_.friends.add(receiver_.user)
+        receiver_.friends.add(sender_.user)
+        sender_.save()
+        receiver_.save()
