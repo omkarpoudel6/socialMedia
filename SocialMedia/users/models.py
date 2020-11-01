@@ -22,17 +22,23 @@ class Profile(models.Model):
     avatar=models.ImageField(upload_to='useravatar', default='default_avatar.jpg')
     country=models.CharField(choices=COUNTRY,max_length=30, blank=True)
     phone=models.CharField(max_length=13, blank=True)
+    friends=models.ManyToManyField(User,blank=True,related_name='friends')
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return str(self.username)
 
-class FriendRequests(models.Model):
+class RelationShip(models.Model):
 
-    username=models.OneToOneField(User,on_delete=models.CASCADE,related_name='sender')
-    sender=models.ForeignKey(User,on_delete=models.CASCADE,related_name='receiver')
-    status=models.CharField(max_length=8,default='received')
+    CHOICES=(
+        ('send','send'),
+        ('accepted','accepted')
+    )
+
+    sender=models.ForeignKey(User,on_delete=models.CASCADE,related_name='sender')
+    receiver=models.ForeignKey(User,on_delete=models.CASCADE,related_name='receiver')
+    status=models.CharField(choices=CHOICES,max_length=8)
 
     def __str__(self):
         return self.sender
