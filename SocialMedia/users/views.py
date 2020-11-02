@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate,get_user_model,login,logout
 from django.contrib.auth.models import User
-from .models import Profile
+from .models import Profile,RelationShip
 from posts.models import Post
 
 from .forms import UserLoginForm,UserRegisterForm,ProfileUpdateForm
@@ -81,15 +81,32 @@ def view_friends_profile(request,id):
 
 def Friends(request):
     user=request.user
-    print(user.id)
-    users=Profile.objects.all()
+    context={}
+    users=Profile.objects.exclude(username_id=user.id)
     logged_user_profile = Profile.objects.get(username=user)
-    context={
-        # 'user':user,
-        'users':users,
-        'logged_user_profile':logged_user_profile
-    }
+    if RelationShip.objects.filter(receiver=user.id):
+        friend_request=RelationShip.objects.filter(receiver=user.id)
+        context['friend_requests']=friend_request
+    context['users']=users
+    context['logged_user_profile']=logged_user_profile
+    # context={
+    #     # 'user':user,
+    #     'users':users,
+    #     'logged_user_profile':logged_user_profile,
+    #     'friend_request':friend_request
+    # }
     return render(request,'friends.html',context)
+
+def AddFriend(request):
+    user=request.user
+    if request.method=='POST':
+        receiver_id=request.POST.get('receiver_id')
+        receiver=User.objects.get(id=receiver_id)
+        relationship=RelationShip()
+        relationship.sender=user
+        relationship.receiver=receiver
+        relationship.save()
+    return redirect("/friends")
 
 
 

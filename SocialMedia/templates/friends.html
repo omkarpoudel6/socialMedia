@@ -3,10 +3,25 @@
 {% block content %}
 
 {% for obj in users %}
-    {% if obj.username != logged_user_profile.username %}
+<!--    {% if obj.username != logged_user_profile.username %}-->
         <img src="{{obj.avatar.url}}" style="height:50px;width:50px;border-radius:30px;" class="img-fluid">
         {{obj.username}}
-        <button type="button" class="btn btn-outline-success btn-sm">Add Friend</button><br>
-    {% endif %}
+        <form action="{% url 'users:addfriend'%}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="receiver_id" value="{{obj.username_id}}">
+            <button type="submit" class="btn btn-outline-success btn-sm">Add Friend</button><br>
+        </form>
+
+<!--    {% endif %}-->
 {% endfor %}
+<br>
+<br>
+<hr>
+<h3>Friend Requests</h3>
+{% for request in friend_requests %}
+    <img src="{{request.sender.user.avatar.url}}" style="height:50px;width:50px;border-radius:30px;" class="img-fluid">
+    {{request.sender}}
+    <button type="submit" class="btn btn-outline-success btn-sm">Confirm</button><br>
+{% endfor %}
+
 {% endblock %}
