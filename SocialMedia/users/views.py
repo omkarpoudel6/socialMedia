@@ -85,7 +85,7 @@ def Friends(request):
     users=Profile.objects.exclude(username_id=user.id)
     logged_user_profile = Profile.objects.get(username=user)
     if RelationShip.objects.filter(receiver=user.id):
-        friend_request=RelationShip.objects.filter(receiver=user.id)
+        friend_request=RelationShip.objects.filter(receiver=user.id,status="send")
         context['friend_requests']=friend_request
     context['users']=users
     context['logged_user_profile']=logged_user_profile
@@ -107,6 +107,16 @@ def AddFriend(request):
         relationship.receiver=receiver
         relationship.save()
     return redirect("/friends")
+
+def AcceptFriendRequest(request):
+    user=request.user
+    if request.method=="POST":
+        sender_id=request.POST.get('sender_id')
+        relationship=RelationShip.objects.get(sender=sender_id,receiver=user.id)
+        relationship.status="accepted"
+        relationship.save()
+    return redirect("/friends")
+
 
 
 

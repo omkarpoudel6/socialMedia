@@ -1,27 +1,48 @@
 {% extends 'base.html '%}
 {% block title %} Friends {% endblock %}
 {% block content %}
+<div class="container">
 
-{% for obj in users %}
-<!--    {% if obj.username != logged_user_profile.username %}-->
-        <img src="{{obj.avatar.url}}" style="height:50px;width:50px;border-radius:30px;" class="img-fluid">
-        {{obj.username}}
-        <form action="{% url 'users:addfriend'%}" method="post">
+    <hr>
+    <h3>Your Friends</h3>
+    {% for friend in logged_user_profile.get_friends %}
+        <img src="{{friend.user.avatar.url}}" style="height:50px;width:50px;border-radius:30px;" class="img-fluid">
+        <a href="/friends/view_friends_profile/{{friend.id}}"><strong>{{friend}}</strong><br></a><br>
+        <button type="submit" class="btn btn-outline-danger btn-sm">Remove Friend</button><br><br>
+    {% endfor %}
+
+    {% for user in logged_user_profile.relationship %}
+        {{user}}
+    {% endfor %}
+
+    <hr>
+    <h3>People You May Know</h3>
+    {% for obj in users %}
+    <!--    {% if obj.username != logged_user_profile.username %}-->
+            <img src="{{obj.avatar.url}}" style="height:50px;width:50px;border-radius:30px;" class="img-fluid">
+            <a href="/friends/view_friends_profile/{{obj.username.id}}"><strong>{{obj.username}}</strong><br></a><br>
+            <form action="{% url 'users:addfriend'%}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="receiver_id" value="{{obj.username_id}}">
+                <button type="submit" class="btn btn-outline-success btn-sm">Add Friend</button><br>
+            </form>
+
+    <!--    {% endif %}-->
+    {% endfor %}
+    <br>
+    <br>
+    <hr>
+    <h3>Friend Requests</h3>
+    {% for request in friend_requests %}
+        <img src="{{request.sender.user.avatar.url}}" style="height:50px;width:50px;border-radius:30px;" class="img-fluid">
+
+        <a href="/friends/view_friends_profile/{{request.sender.id}}"><strong>{{request.sender}}</strong><br></a><br>
+        <form action="{% url 'users:acceptfriendrequest' %}" method="post">
             {% csrf_token %}
-            <input type="hidden" name="receiver_id" value="{{obj.username_id}}">
-            <button type="submit" class="btn btn-outline-success btn-sm">Add Friend</button><br>
+            <input type="hidden" name="sender_id" value="{{request.sender.id}}">
+            <button type="submit" class="btn btn-outline-success btn-sm">Confirm</button><br>
         </form>
-
-<!--    {% endif %}-->
-{% endfor %}
-<br>
-<br>
-<hr>
-<h3>Friend Requests</h3>
-{% for request in friend_requests %}
-    <img src="{{request.sender.user.avatar.url}}" style="height:50px;width:50px;border-radius:30px;" class="img-fluid">
-    {{request.sender}}
-    <button type="submit" class="btn btn-outline-success btn-sm">Confirm</button><br>
-{% endfor %}
+    {% endfor %}
+</div>
 
 {% endblock %}
