@@ -42,10 +42,10 @@
             <div class="post-complete my-2" style="border-radius:10px;">
                 <div class="author-info" style="display:flex;">
                     <div class="author-image">
-                        <img src="{{post.author.profile.avatar.url}}" style="height:50px;width:50px;border-radius:30px;" class="img-fluid">
+                        <img src="{{post.author.user.avatar.url}}" style="height:50px;width:50px;border-radius:30px;" class="img-fluid">
                     </div>
                     <div class="post-detail mx-2">
-                        <a href="/friends/view_friends_profile/{{post.author.profile.id}}"><strong>{{post.author}}</strong><br></a>
+                        <a href="/friends/view_friends_profile/{{post.author.id}}"><strong>{{post.author}}</strong><br></a>
                         <small>{{post.created_at|timesince}} ago</small>
                     </div>
                 </div>

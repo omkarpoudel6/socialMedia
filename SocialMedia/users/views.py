@@ -68,14 +68,28 @@ def User_profile(request):
     return render(request, 'profile/userprofile.html', context)
 
 def view_friends_profile(request,id):
-    profile=Profile.objects.get(id=id)
+    user=request.user
+    profile=Profile.objects.get(username_id=id)
     posts=Post.objects.filter(author=profile.username)
-    print(posts)
+    logged_user_profile = Profile.objects.get(username=user)
     context={
         'profile':profile,
+        'logged_user_profile':logged_user_profile,
         'posts':posts
     }
     return render(request,'profile/view_friends_profile.html',context)
+
+def Friends(request):
+    user=request.user
+    print(user.id)
+    users=Profile.objects.all()
+    logged_user_profile = Profile.objects.get(username=user)
+    context={
+        # 'user':user,
+        'users':users,
+        'logged_user_profile':logged_user_profile
+    }
+    return render(request,'friends.html',context)
 
 
 
