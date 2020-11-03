@@ -82,19 +82,26 @@ def view_friends_profile(request,id):
 def Friends(request):
     user=request.user
     context={}
+    people_you_may_know=[]
+    # getting all available user profile
     users=Profile.objects.exclude(username_id=user.id)
+
+    #checking is relationship between profiles and user exists or not related to friend requests if relationship doesnot exists the the logged in user
+    #can send friend request
+    for u in users:
+        if not (RelationShip.objects.filter(sender=user.id,receiver=u.username_id) or RelationShip.objects.filter(sender=u.username_id,receiver=user.id)) :
+            people_you_may_know.append(u)
+    context['people_you_may_know']=people_you_may_know
+
+    #gettin logged in user profile
     logged_user_profile = Profile.objects.get(username=user)
+
+    #getting friend request for logged in user
     if RelationShip.objects.filter(receiver=user.id):
         friend_request=RelationShip.objects.filter(receiver=user.id,status="send")
         context['friend_requests']=friend_request
-    context['users']=users
+
     context['logged_user_profile']=logged_user_profile
-    # context={
-    #     # 'user':user,
-    #     'users':users,
-    #     'logged_user_profile':logged_user_profile,
-    #     'friend_request':friend_request
-    # }
     return render(request,'friends.html',context)
 
 def AddFriend(request):

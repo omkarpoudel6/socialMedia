@@ -17,20 +17,21 @@
 
     <hr>
     <h3>People You May Know</h3>
-    {% for obj in users %}
+    {% for obj in people_you_may_know %}
         {% if not obj.username in logged_user_profile.get_friends %}
             <img src="{{obj.avatar.url}}" style="height:50px;width:50px;border-radius:30px;" class="img-fluid">
             <a href="/friends/view_friends_profile/{{obj.username.id}}"><strong>{{obj.username}}</strong><br></a><br>
             <form action="{% url 'users:addfriend'%}" method="post">
                 {% csrf_token %}
                 <input type="hidden" name="receiver_id" value="{{obj.username_id}}">
-                {% for request in friend_requests %}
-                    {% if user.id == request.sender %}
-                        <button type="submit" class="btn btn-outline-success btn-sm" disabled>Request Sent</button><br>
-                    {% else %}
-                        <button type="submit" class="btn btn-outline-success btn-sm">Add Friend</button><br>
-                    {% endif %}
-                {% endfor %}
+                <button type="submit" class="btn btn-outline-success btn-sm">Add Friend</button><br>
+<!--                {% for request in friend_requests %}-->
+<!--                    {% if user.id == request.sender %}-->
+<!--                        <button type="submit" class="btn btn-outline-success btn-sm" disabled>Request Sent</button><br>-->
+<!--                    {% else %}-->
+<!--                        <button type="submit" class="btn btn-outline-success btn-sm">Add Friend</button><br>-->
+<!--                    {% endif %}-->
+<!--                {% endfor %}-->
             </form>
         {% endif %}
     {% endfor %}
