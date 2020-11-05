@@ -50,6 +50,10 @@ def register_view(request):
 
 
 def Logout(request):
+    user=request.user
+    logged_user_profile=Profile.objects.get(username=user)
+    logged_user_profile.online='False'
+    logged_user_profile.save()
     logout(request)
     return redirect('/login')
 

@@ -2,69 +2,68 @@
 {% block title %} Friends {% endblock %}
 {% block content %}
 <div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <h3>Your Friends</h3>
+            {% for friend in logged_user_profile.get_friends %}
+                <img src="{{friend.user.avatar.url}}" style="height:50px;width:50px;border-radius:30px;" class="img-fluid">
+                <a href="/friends/view_friends_profile/{{friend.id}}"><strong>{{friend}}</strong><br></a><br>
+                <button type="submit" class="btn btn-outline-danger btn-sm">Remove Friend</button><br><br>
+            {% endfor %}
 
-    <hr>
-    <h3>Your Friends</h3>
-    {% for friend in logged_user_profile.get_friends %}
-        <img src="{{friend.user.avatar.url}}" style="height:50px;width:50px;border-radius:30px;" class="img-fluid">
-        <a href="/friends/view_friends_profile/{{friend.id}}"><strong>{{friend}}</strong><br></a><br>
-        <button type="submit" class="btn btn-outline-danger btn-sm">Remove Friend</button><br><br>
-    {% endfor %}
+            {% for user in logged_user_profile.relationship %}
+                {{user}}
+            {% endfor %}
 
-    {% for user in logged_user_profile.relationship %}
-        {{user}}
-    {% endfor %}
+            <hr>
+            <h3>People You May Know</h3>
+            <div class="card-group">
+                {% for obj in people_you_may_know %}
+                    {% if not obj.username in logged_user_profile.get_friends %}
+                        <div class="card">
+                            <img src="{{obj.avatar.url}}" class="card-img-top" style="height:150px;width:100px;" alt="...">
+                            <div class="card-body">
+                              <a href="/friends/view_friends_profile/{{obj.username.id}}">{{obj.username}}</a>
+                              <form action="{% url 'users:addfriend'%}" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="receiver_id" value="{{obj.username_id}}">
+                                <button type="submit" class="btn btn-outline-success btn-sm">Add Friend</button><br>
+                              </form>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <br>
+            <br>
+            <hr>
+            <h3>Friend Requests</h3>
+            {% for request in friend_requests %}
+                <img src="{{request.sender.user.avatar.url}}" style="height:50px;width:50px;border-radius:30px;" class="img-fluid">
 
-    <hr>
-    <h3>People You May Know</h3>
-<!--    {% for obj in people_you_may_know %}-->
-<!--        {% if not obj.username in logged_user_profile.get_friends %}-->
+                <a href="/friends/view_friends_profile/{{request.sender.id}}"><strong>{{request.sender}}</strong><br></a><br>
+                <form action="{% url 'users:acceptfriendrequest' %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="sender_id" value="{{request.sender.id}}">
+                    <button type="submit" class="btn btn-outline-success btn-sm">Confirm</button><br>
+                </form>
+            {% endfor %}
+        </div>
+        <div class="col-md-3">
+            <h3>Active Friends</h3>
+            {% for friend in logged_user_profile.get_friends %}
+<!--                {{friend.user.first_name}}-->
+                {% if friend.user.online == 1 %}
+                    <img src="{{friend.user.avatar.url}}" style="height:20px;width:20px;border-radius:30px;" class="img-fluid">
+                    <a href="/friends/view_friends_profile/{{friend.id}}"><strong>{{friend}}</strong><br></a><br>
+                {% endif %}
 
-<!--            <img src="{{obj.avatar.url}}" style="height:50px;width:50px;border-radius:30px;" class="img-fluid">-->
-<!--            <a href="/friends/view_friends_profile/{{obj.username.id}}"><strong>{{obj.username}}</strong><br></a><br>-->
-<!--            <form action="{% url 'users:addfriend'%}" method="post">-->
-<!--                {% csrf_token %}-->
-<!--                <input type="hidden" name="receiver_id" value="{{obj.username_id}}">-->
-<!--                <button type="submit" class="btn btn-outline-success btn-sm">Add Friend</button><br>-->
-<!--            </form>-->
-<!--        {% endif %}-->
-<!--    {% endfor %}-->
-
-    <div class="card-group">
-        {% for obj in people_you_may_know %}
-            {% if not obj.username in logged_user_profile.get_friends %}
-                <div class="card">
-                    <img src="{{obj.avatar.url}}" class="card-img-top" style="height:200px;width:170px;" alt="...">
-                    <div class="card-body">
-                      <a href="/friends/view_friends_profile/{{obj.username.id}}">{{obj.username}}</a>
-                      <form action="{% url 'users:addfriend'%}" method="post">
-                        {% csrf_token %}
-                        <input type="hidden" name="receiver_id" value="{{obj.username_id}}">
-                        <button type="submit" class="btn btn-outline-success btn-sm">Add Friend</button><br>
-                      </form>
-                    </div>
-                </div>
-            {% endif %}
-        {% endfor %}
+            {% endfor %}
+        </div>
+        <div class="col-md-3">
+            <h3>Messages</h3>
+        </div>
     </div>
-
-    <br>
-    <br>
-    <hr>
-    <h3>Friend Requests</h3>
-    {% for request in friend_requests %}
-        <img src="{{request.sender.user.avatar.url}}" style="height:50px;width:50px;border-radius:30px;" class="img-fluid">
-
-        <a href="/friends/view_friends_profile/{{request.sender.id}}"><strong>{{request.sender}}</strong><br></a><br>
-        <form action="{% url 'users:acceptfriendrequest' %}" method="post">
-            {% csrf_token %}
-            <input type="hidden" name="sender_id" value="{{request.sender.id}}">
-            <button type="submit" class="btn btn-outline-success btn-sm">Confirm</button><br>
-        </form>
-    {% endfor %}
-
-
-
 </div>
 
 {% endblock %}

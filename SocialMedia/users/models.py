@@ -23,6 +23,7 @@ class Profile(models.Model):
     country=models.CharField(choices=COUNTRY,max_length=30, blank=True)
     phone=models.CharField(max_length=13, blank=True)
     friends=models.ManyToManyField(User,blank=True,related_name='friends')
+    online=models.BooleanField(default='False')
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
 
