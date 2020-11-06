@@ -76,10 +76,16 @@ def view_friends_profile(request,id):
     profile=Profile.objects.get(username_id=id)
     posts=Post.objects.filter(author=profile.username)
     logged_user_profile = Profile.objects.get(username=user)
+    mutual_friends=0
+    for friend in logged_user_profile.get_friends():
+        if friend in profile.get_friends():
+            mutual_friends += 1
+    print(mutual_friends)
     context={
         'profile':profile,
         'logged_user_profile':logged_user_profile,
-        'posts':posts
+        'posts':posts,
+        'mutual_friends':mutual_friends
     }
     return render(request,'profile/view_friends_profile.html',context)
 
