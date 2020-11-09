@@ -10,6 +10,8 @@
     {% block content %}
     {% endblock %}
 
-    {% include 'script.html' %}
+    {% block script %}
+      {% include 'script.html' %}
+    {% endblock %}
   </body>
 </html>
