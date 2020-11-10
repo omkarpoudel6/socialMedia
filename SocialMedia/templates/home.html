@@ -9,9 +9,9 @@
 <!--          <a class="nav-link" href="#">Link</a>-->
 <!--        </nav>-->
     </div>
-    <div class="col-md-6 my-4">
+    <div class="col-md-6" style="background:#6c6969;">
                     <!-- Button trigger modal -->
-        <button type="button" class="btn btn-light btn-lg btn-block" data-toggle="modal" data-target="#exampleModal">
+        <button type="button" class="btn btn-dark btn-lg btn-block" data-toggle="modal" data-target="#exampleModal">
           Create Your Post
         </button>
 
@@ -37,43 +37,64 @@
               </form>
           </div>
         </div>
-        <div class="post bg-light">
+        <div class="post" style="width:90%;margin:0 auto;background:#6c6969;">
             {% for post in posts %}
-            <div class="post-complete my-2" style="border-radius:10px;">
-                <div class="author-info" style="display:flex;">
-                    <div class="author-image">
-                        <img src="{{post.author.user.avatar.url}}" style="height:50px;width:50px;border-radius:30px;" class="img-fluid">
-                    </div>
-                    <div class="post-detail mx-2">
-                        <a href="/friends/view_friends_profile/{{post.author.id}}"><strong>{{post.author}}</strong><br></a>
-                        <small>{{post.created_at|timesince}} ago</small>
-                    </div>
-                </div>
-                <div class="complete-post my-2">
-                    {{post.title}}<br>
-
-                    {% if post.image %}
-                        <div class="imagepart justify-content-center">
-                            <img src="{{post.image.url}}" style="width:100%;height:500px;" class="img-fluid" alt="Image loading Failed"><br>
+                <div class="post-complete my-2" style="border:3px solid white; border-radius:10px;">
+                    <div class="author-info" style="display:flex;">
+                        <div class="author-image">
+                            <img src="{{post.author.user.avatar.url}}" style="height:50px;width:50px;border-radius:30px;" class="img-fluid">
                         </div>
-                    {% endif %}
-                    {{post.content}}<br>
-                    <br>
-                     <strong>{{post.liked.all.count}} likes</strong>
-                    <form action="{% url 'posts:like-post' %}" method="post">
-                        {% csrf_token %}
-                        <input type="hidden" name="post_id" value="{{post.id}}">
-                        {% if user not in post.liked.all %}
-                            <button type="submit" class="btn btn-outline-success">Like</button>
-                        {% else %}
-                            <button type="submit" class="btn btn-outline-danger">Unlike</button>
+                        <div class="post-detail mx-2">
+                            <a href="/friends/view_friends_profile/{{post.author.id}}"><strong>{{post.author}}</strong><br></a>
+                            <small>{{post.created_at|timesince}} ago</small>
+                        </div>
+                    </div>
+                    <div class="complete-post my-2">
+                        {{post.title}}<br>
+
+                        {% if post.image %}
+                            <div class="imagepart justify-content-center">
+                                <img src="{{post.image.url}}" style="width:100%;height:500px;" class="img-fluid" alt="Image loading Failed"><br>
+                            </div>
                         {% endif %}
-                    </form>
-                    <hr>
-                    <hr>`
+                        {{post.content}}<br>
+                        <hr>
+                         <strong>{{post.liked.all.count}} likes</strong>
+                        <form action="{% url 'posts:like-post' %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="post_id" value="{{post.id}}">
+                            {% if user not in post.liked.all %}
+                                <button type="submit" class="btn btn-outline-success btn-sm">Like</button>
+                            {% else %}
+                                <button type="submit" class="btn btn-outline-danger btn-sm">Unlike</button>
+                            {% endif %}
+                        </form>
+                        <hr>
+                        <div class="comment-portion">
+                            <div class="post-comments mx-auto" style="width:90%;">
+                                {% for comment in comments %}
+                                    {% if comment.post_id == post.id %}
+                                        <img src="{{comment.author.user.avatar.url}}" style="height:40px;width:40px;border-radius:30px;" class="img-fluid">
+                                        {{comment.comment}}<br>
+                                        <span style="font-size:10px;">{{comment.created_at|timesince}} ago</span>
+                                        <hr>
+                                    {% endif %}
+
+                                {% endfor %}
+
+                            </div>
+
+                            <form method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="post_id" value="{{post.id}}">
+                                <input type="text" class="form-control" name="comment" maxlength="250" placeholder="Enter Your Comment">
+                                <button type="submit" class="btn btn-outline-primary btn-sm my-2">Comment</button>
+                            </form>
+                        </div>
+                    </div>
+
                 </div>
             {% endfor %}
-            </div>
         </div>
     </div>
     <div class="col-md-3">
