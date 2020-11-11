@@ -84,10 +84,10 @@
 
                             </div>
 
-                            <form method="post">
+                            <form action="{% url 'posts:comment-post' %}" method="post">
                                 {% csrf_token %}
                                 <input type="hidden" name="post_id" value="{{post.id}}">
-                                <input type="text" class="form-control" name="comment" maxlength="250" placeholder="Enter Your Comment">
+                                <input type="text" class="form-control" name="comment" maxlength="250" placeholder="Enter Your Comment" required>
                                 <button type="submit" class="btn btn-outline-primary btn-sm my-2">Comment</button>
                             </form>
                         </div>
@@ -103,7 +103,4 @@
 </div>
 
 
-{% endblock %}
-
-{% block script %}
 {% endblock %}
