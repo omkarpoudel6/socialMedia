@@ -1,15 +1,19 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="row">
-    <div class="col-md-3">
-<!--        <nav class="nav flex-column">-->
-<!--          <a class="nav-link disabled">{{user.username}}</a>-->
-<!--          <a class="nav-link active" href="#">Active</a>-->
-<!--          <a class="nav-link" href="#">Link</a>-->
-<!--          <a class="nav-link" href="#">Link</a>-->
-<!--        </nav>-->
+    <div class="col-md-2">
+<!--        <div class="d-flex flex-row">-->
+<!--          <div class="p-2">Flex item 1</div>-->
+<!--          <div class="p-2">Flex item 2</div>-->
+<!--          <div class="p-2">Flex item 3</div>-->
+<!--        </div>-->
+<!--        <div class="d-flex flex-row-reverse">-->
+<!--          <div class="p-2">Flex item 1</div>-->
+<!--          <div class="p-2">Flex item 2</div>-->
+<!--          <div class="p-2">Flex item 3</div>-->
+<!--        </div>-->
     </div>
-    <div class="col-md-6" style="background:#6c6969;">
+    <div class="col-md-8" style="background:#6c6969;">
                     <!-- Button trigger modal -->
         <button type="button" class="btn btn-dark btn-lg btn-block" data-toggle="modal" data-target="#exampleModal">
           Create Your Post
@@ -74,22 +78,32 @@
                             <div class="post-comments mx-auto" style="width:90%;">
                                 {% for comment in comments %}
                                     {% if comment.post_id == post.id %}
-                                        <img src="{{comment.author.user.avatar.url}}" style="height:40px;width:40px;border-radius:30px;" class="img-fluid">
-                                        {{comment.comment}}<br>
-                                        <span style="font-size:10px;">{{comment.created_at|timesince}} ago</span>
-                                        <hr>
+                                        <div class="commenter-info" style="display:flex;">
+                                            <div class="comment-author-image">
+                                                <img src="{{comment.author.user.avatar.url}}" style="height:40px;width:40px;border-radius:30px;" class="img-fluid">
+                                            </div>
+                                            <div class="comment-info mx-2">
+                                                <strong>{{comment.author.user}}</strong><br>
+                                                {{comment.comment}}<br>
+                                                <span style="font-size:10px;">{{comment.created_at|timesince}} ago</span>
+                                                <hr>
+                                            </div>
+                                        </div>
                                     {% endif %}
-
                                 {% endfor %}
-
                             </div>
-
-                            <form action="{% url 'posts:comment-post' %}" method="post">
+                            <div class="comment-form">
+                                <form action="{% url 'posts:comment-post' %}" method="post" class="form-inline">
                                 {% csrf_token %}
                                 <input type="hidden" name="post_id" value="{{post.id}}">
-                                <input type="text" class="form-control" name="comment" maxlength="250" placeholder="Enter Your Comment" required>
-                                <button type="submit" class="btn btn-outline-primary btn-sm my-2">Comment</button>
-                            </form>
+                                <img src="{{logged_user_profile.avatar.url}}" style="height:35px;width:35px;border-radius:30px;" class="img-fluid mb-2 mx-2">
+                                <div class="form-group mb-2" style="width:80%;">
+                                    <input type="text" class="form-control mx-sm-3" style="width:100%;" name="comment" maxlength="250" placeholder="Enter Your Comment" required>
+                                </div>
+                                <button type="submit" class="btn btn-outline-primary btn-sm mb-2">Comment</button>
+                                </form>
+                            </div>
+
                         </div>
                     </div>
 
@@ -97,7 +111,7 @@
             {% endfor %}
         </div>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-2">
 <!--        <h2>This is right sidebar</h2>-->
     </div>
 </div>
