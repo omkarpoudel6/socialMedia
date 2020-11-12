@@ -63,50 +63,61 @@
                         {% endif %}
                         {{post.content}}<br>
                         <hr>
-                         <strong>{{post.liked.all.count}} likes</strong>
-                        <form action="{% url 'posts:like-post' %}" method="post">
-                            {% csrf_token %}
-                            <input type="hidden" name="post_id" value="{{post.id}}">
-                            {% if user not in post.liked.all %}
-                                <button type="submit" class="btn btn-outline-success btn-sm">Like</button>
-                            {% else %}
-                                <button type="submit" class="btn btn-outline-danger btn-sm">Unlike</button>
-                            {% endif %}
-                        </form>
-                        <hr>
-                        <div class="comment-portion">
-                            <div class="post-comments mx-auto" style="width:90%;">
-                                {% for comment in comments %}
-                                    {% if comment.post_id == post.id %}
-                                        <div class="commenter-info" style="display:flex;">
-                                            <div class="comment-author-image">
-                                                <img src="{{comment.author.user.avatar.url}}" style="height:40px;width:40px;border-radius:30px;" class="img-fluid">
-                                            </div>
-                                            <div class="comment-info mx-2">
-                                                <strong>{{comment.author.user}}</strong><br>
-                                                {{comment.comment}}<br>
-                                                <span style="font-size:10px;">{{comment.created_at|timesince}} ago</span>
-                                                <hr>
-                                            </div>
-                                        </div>
+                        <div class="like-comment-buttons" style="display:flex;">
+                            <div class="like-button">
+                                <strong>{{post.liked.all.count}} likes</strong>
+                                <form action="{% url 'posts:like-post' %}" method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="post_id" value="{{post.id}}">
+                                    {% if user not in post.liked.all %}
+                                        <button type="submit" class="btn btn-outline-success btn-sm">Like</button>
+                                    {% else %}
+                                        <button type="submit" class="btn btn-outline-danger btn-sm">Unlike</button>
                                     {% endif %}
-                                {% endfor %}
-                            </div>
-                            <div class="comment-form">
-                                <form action="{% url 'posts:comment-post' %}" method="post" class="form-inline">
-                                {% csrf_token %}
-                                <input type="hidden" name="post_id" value="{{post.id}}">
-                                <img src="{{logged_user_profile.avatar.url}}" style="height:35px;width:35px;border-radius:30px;" class="img-fluid mb-2 mx-2">
-                                <div class="form-group mb-2" style="width:80%;">
-                                    <input type="text" class="form-control mx-sm-3" style="width:100%;" name="comment" maxlength="250" placeholder="Enter Your Comment" required>
-                                </div>
-                                <button type="submit" class="btn btn-outline-primary btn-sm mb-2">Comment</button>
                                 </form>
                             </div>
-
+                            <div class="comment-button mx-2 my-4">
+                                <button class="btn btn-outline-primary btn-sm" type="button" data-toggle="collapse" data-target="#collapseExample{{post.id}}" aria-expanded="false" aria-controls="collapseExample">
+                                    View Comments
+                                </button>
+                            </div>
                         </div>
+                        <div class="collapse" id="collapseExample{{post.id}}">
+                          <div class="card card-body">
+                            <div class="comment-portion">
+                                <div class="post-comments mx-auto" style="width:90%;">
+                                    {% for comment in comments %}
+                                        {% if comment.post_id == post.id %}
+                                            <div class="commenter-info" style="display:flex;">
+                                                <div class="comment-author-image">
+                                                    <img src="{{comment.author.user.avatar.url}}" style="height:40px;width:40px;border-radius:30px;" class="img-fluid">
+                                                </div>
+                                                <div class="comment-info mx-2">
+                                                    <strong>{{comment.author.user}}</strong><br>
+                                                    {{comment.comment}}<br>
+                                                    <span style="font-size:10px;">{{comment.created_at|timesince}} ago</span>
+                                                    <hr>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="comment-form my-3">
+                            <form action="{% url 'posts:comment-post' %}" method="post" class="form-inline">
+                            {% csrf_token %}
+                            <input type="hidden" name="post_id" value="{{post.id}}">
+                            <img src="{{logged_user_profile.avatar.url}}" style="height:35px;width:35px;border-radius:30px;" class="img-fluid mb-2 mx-2">
+                            <div class="form-group mb-2" style="width:80%;">
+                                <input type="text" class="form-control mx-sm-3" style="width:100%;" name="comment" maxlength="250" placeholder="Enter Your Comment" required>
+                            </div>
+                            <button type="submit" class="btn btn-outline-primary btn-sm mb-2">Comment</button>
+                            </form>
+                        </div>
+                        <hr>
                     </div>
-
                 </div>
             {% endfor %}
         </div>
