@@ -32,10 +32,12 @@
               </form>
           </div>
         </div>
+
+<!--        posts portion-->
         <div class="post" style="width:90%;margin:0 auto;background:#6c6969;">
             {% for post in posts %}
                 <div class="post-complete my-2" style="border:3px solid white; border-radius:10px;">
-                    <div class="author-info" style="display:flex;">
+                    <div class="author-info mx-2 my-2" style="display:flex;">
                         <div class="author-image">
                             <img src="{{post.author.user.avatar.url}}" style="height:50px;width:50px;border-radius:30px;" class="img-fluid">
                         </div>
@@ -45,17 +47,17 @@
                         </div>
                     </div>
                     <div class="complete-post my-2">
-                        {{post.title}}<br>
+                        <span class="post-title mx-2">{{post.title}}</span><br>
 
                         {% if post.image %}
                             <div class="imagepart justify-content-center">
                                 <img src="{{post.image.url}}" style="width:100%;height:500px;" class="img-fluid" alt="Image loading Failed"><br>
                             </div>
                         {% endif %}
-                        {{post.content}}<br>
+                        <span class="post-content mx-2">{{post.content}}</span><br>
                         <hr>
                         <div class="like-comment-buttons" style="display:flex;">
-                            <div class="like-button">
+                            <div class="like-button mx-2">
                                 <strong>{{post.liked.all.count}} likes</strong>
                                 <form action="{% url 'posts:like-post' %}" method="post">
                                     {% csrf_token %}
